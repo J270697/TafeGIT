@@ -1,0 +1,9 @@
+
+guess asset  [0, 0, 1, 1, 1]
+asset asset  [2, 2, 2, 2, 2]
+guess maple  [0, 0, 1, 0, 0]
+slime slime  [2, 2, 2, 2, 2]
+guess venom  [0, 0, 1, 0, 0]
+slate venom  [0, 0, 0, 0, 1]
+aside venom  [0, 0, 0, 0, 1]
+venom venom  [2, 2, 2, 2, 2]
