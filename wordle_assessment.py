@@ -1,6 +1,7 @@
 
 #Travis Byrne, J270697, 03MAY25
 import random
+import datetime as d
 
 
 
@@ -22,7 +23,8 @@ def target_word():
     return random.choice(target_words_list)
 
 def all_words():
-    with open("all_words.txt", 'r') as valid_words:
+    date = str(d.date.today())
+    with open(f"all_words{date}.txt", 'r') as valid_words:
         unconverted_all_words = valid_words.readlines()
         all_words_list = []
         for line in unconverted_all_words:
@@ -65,7 +67,24 @@ def score_guess(guess, target_words):
 
 def audit_log(guess, answer, score):
     with open("log_date.log", 'a') as logfile:
-        logfile.write("\n" + guess + " " + answer + " " + " " + score)
+        logfile.write("Guess: " + guess + ", Answer: " + answer + ", Score: " + score + "\n")
+
+def emoji_answer(score):
+    converted_score = [""] * len(score)
+    for num in range(len(score)):
+        if score[num] == 2:
+            converted_score[num] = "✅"
+
+        elif score[num] == 1:
+            converted_score[num] = "😕"
+
+
+        else:
+            converted_score[num] = "❌"
+
+
+    return converted_score
+
 
 def rules():
     print("\nRules:")
@@ -96,11 +115,25 @@ def game_loop():
     #Intro
     print("Welcome to Wordle game")
 
-    difficulty = int(input("What level? Easy, normal or hard? [1 = easy, 2 = normal, 3 = hard").strip())
-    if difficulty == 1:
-        total_guess += 1
-    elif difficulty == 3:
-        total_guess -= 1
+    while(True):
+        try:
+            difficulty = int(input("What level? Easy, normal or hard? [1 = easy, 2 = normal, 3 = hard]: ").strip())
+        except ValueError:
+            print("Please enter a valid difficulty.")
+            continue
+        if difficulty == 1:
+            total_guess += 1
+            break
+        elif difficulty == 3:
+            total_guess -= 1
+            break
+        elif difficulty == 2:
+            break
+        else:
+            print("Please enter a valid difficulty.")
+            continue
+
+
 
     # Game Loop
     while True:
@@ -130,8 +163,8 @@ def game_loop():
 
         #When all criteria met, score answer and display score
         score = score_guess(guess, answer)
-        print(*guess.upper(), sep=' ')
-        print(*score, sep=' ')
+        print(*guess.upper(), sep='    ')
+        print(*emoji_answer(score), sep='   ')
 
 
         guess_count += 1
